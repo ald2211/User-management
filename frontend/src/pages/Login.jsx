@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import {useNavigate} from "react-router-dom"
 
 const Login = () => {
   const [signInState, setSignInState] = useState("Sign In");
@@ -7,6 +8,8 @@ const Login = () => {
   const passwordRef=useRef()
   const [error,setError]=useState()
   const [loading,setLoading]=useState(false)
+  
+  const navigate=useNavigate()
   const handleChange=(event)=>{
     setFormData(
       {
@@ -40,18 +43,40 @@ const Login = () => {
           setSignInState('Sign In');
           setLoading(false)
           setError(null)
+          
     }else{
-      setLoading(false)
-      return
+      setLoading(true)
+      const {email,password}=formData
+      const res=await fetch('http://localhost:3000/api/auth/signin',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json',
+        },
+        body:JSON.stringify({email,password}),
+        credentials: 'include'
+      })
+      const data=await res.json()
+      console.log('data:',data)
+      if(data.success===false) {
+        setError(data.message)
+        setLoading(false)
+        return;
+      } 
+      
+        setLoading(false)
+        setError(null)
+        navigate('/')
+
     }
     }catch(err){
         setLoading(false)
         setError(err.message)
     }
+
   }
   return (
     <div className="p-3 max-w-lg mx-auto mt-4">
-      <h1 class="text-4xl text-center font-bold  blended-blue pb-6">
+      <h1 className="text-4xl text-center font-bold  blended-blue pb-6">
         {signInState}
       </h1>
       {error && <p className="text-red-600 mb-2 text-center">{error}</p>}
