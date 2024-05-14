@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blended-blue {
+    color: #3a4fcc;
+}
+
+body{
+    background-color: rgb(241, 245, 241);
+}
