@@ -1,13 +1,16 @@
 import React, { useRef, useState } from "react";
 import {useNavigate} from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux";
+import { signInFailure,signInStart,signInSuccess } from "../Redux/Reducer/UserSlice";
 
 const Login = () => {
   const [signInState, setSignInState] = useState("Sign In");
   const [formData,setFormData]=useState({})
   const emailRef=useRef()
   const passwordRef=useRef()
-  const [error,setError]=useState()
-  const [loading,setLoading]=useState(false)
+  const{loading,error}=useSelector((state)=>state.user)
+  const dispatch=useDispatch();
+
   
   const navigate=useNavigate()
   const handleChange=(event)=>{
@@ -22,7 +25,7 @@ const Login = () => {
   const handleSubmit=async(event)=>{
     try{
       event.preventDefault()
-    setLoading(true)
+    dispatch(signInStart())
     if(signInState==='Sign Up'){
         const res=await fetch('http://localhost:3000/api/auth/signup',{
           method:'POST',
@@ -34,18 +37,16 @@ const Login = () => {
         const data=await res.json()
         
         if(data.success===false) {
-          setError(data.message)
-          setLoading(false)
+          dispatch(signInFailure(data.message))
           return;
         }
         emailRef.current.value=''
           passwordRef.current.value=''
           setSignInState('Sign In');
-          setLoading(false)
-          setError(null)
+          dispatch(signInSuccess(data))
           
     }else{
-      setLoading(true)
+      dispatch(signInStart())
       const {email,password}=formData
       const res=await fetch('http://localhost:3000/api/auth/signin',{
         method:'POST',
@@ -58,19 +59,16 @@ const Login = () => {
       const data=await res.json()
       console.log('data:',data)
       if(data.success===false) {
-        setError(data.message)
-        setLoading(false)
+        dispatch(signInFailure(data.message))
         return;
       } 
       
-        setLoading(false)
-        setError(null)
+      dispatch(signInSuccess(data))
         navigate('/')
 
     }
     }catch(err){
-        setLoading(false)
-        setError(err.message)
+      dispatch(signInFailure(error.message))
     }
 
   }
