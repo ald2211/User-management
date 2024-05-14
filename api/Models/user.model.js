@@ -23,6 +23,9 @@ const userSchema=mongoose.Schema({
     isAdmin:{
         type:Boolean,
         default:false
+    },
+    avatar:{
+        type:String,
     }
    
 },{timestamps:true});

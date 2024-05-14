@@ -1,7 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
+import { CgProfile } from "react-icons/cg";
+import profile from '../assets/profile.png'
 const Header = () => {
+  const{currentUser}=useSelector((state)=>state.user)
   return (
     <header className='bg-slate-200 shadow-md'>
         <div className='flex justify-between items-center  p-3'>
@@ -14,8 +17,16 @@ const Header = () => {
       </Link>
 
       <ul className='flex gap-4 mr-3 pr-14'>
-     <Link to='/'> <li className='sm:inline text-slate-800 hover:text-red-600'>Home</li> </Link>
-     <Link to='/auth'> <li className='sm:inline text-slate-800 hover:text-red-600'>Sign In</li> </Link>
+     {
+      currentUser ?
+      <>
+      <Link to='/'> <li className='sm:inline text-slate-800 hover:text-red-600'>Home</li> </Link>
+      <Link to='/profile'>
+        <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar||profile} alt="profile" />
+      </Link>
+      </>:
+      <Link to='/auth'> <li className='sm:inline text-slate-800 hover:text-red-600'>Sign In</li> </Link>
+     }
       </ul>
         </div>
     </header>
