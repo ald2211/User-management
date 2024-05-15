@@ -52,6 +52,7 @@ export const updateUser=async(req,res,next)=>{
 
 //admin
 export const getUsers= async(req,res,next)=>{
+    
     if(!req.user.isAdmin){
         return next(errorHandler(403,'no authorization'))
     }
@@ -61,24 +62,25 @@ export const getUsers= async(req,res,next)=>{
         const limit =parseInt(req.query.limit)||10
         const sortDirection=req.query.sort==='asc'?1:-1;
 
-        const users=await User.find()
+        const users=await User.find({isAdmin:false})
         .sort({createdAt:sortDirection})
         .skip(startIndex)
         .limit(limit)
-
+        
         const usersWithoutPassword=users.map((user)=>{
             const {password,...rest}=user._doc
             return rest
         })
-
+       
         const totalUsers=await User.countDocuments()
-
+        
+        const now=new Date()
         const oneMonthAgo=new Date(
             now.getFullYear(),
             now.getMonth()-1,
             now.getDate()
         )
-
+        
         const lastMonthUsers=await User.countDocuments({
             createdAt:{$gte:oneMonthAgo}
         })
@@ -88,6 +90,27 @@ export const getUsers= async(req,res,next)=>{
             lastMonthUsers
         })
     }catch(error){
+        next(error)
+    }
+}
+
+export const blockUser=async(req,res,next)=>{
+
+    try{
+        const { id, userState } = req.params;
+        
+        
+        
+        await User.findByIdAndUpdate(
+            id,
+            { $set: { isBlocked: userState === "true" ? false : true } },
+            { new: true }
+        );
+        
+        res.status(200).json({success:true})
+        
+    }catch(error){
+
         next(error)
     }
 }

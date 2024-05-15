@@ -20,7 +20,7 @@ export const signup=async(req,res,next)=>{
 //sign in
 export const signin=async(req,res,next)=>{
     try{
-        console.log('reached:',req.body)
+        
 
         const {email,password}=req.body
     const hashedPassword=bcrypt.hashSync(password,10);
@@ -31,6 +31,10 @@ export const signin=async(req,res,next)=>{
     const validPassword=bcrypt.compareSync(password,validUser.password)
     if(!validPassword){
         return next(errorHandler(401,'wrong credentials!'))
+    }
+
+    if(validUser.isBlocked){
+        return next(errorHandler(403,'user is blocked by admin!'))
     }
     const token=jwt.sign({id:validUser._id,isAdmin:validUser.isAdmin},process.env.JWT_SECRET)
 

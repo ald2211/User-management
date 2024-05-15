@@ -26,6 +26,10 @@ const userSchema=mongoose.Schema({
     },
     avatar:{
         type:String,
+    },
+    isBlocked:{
+        type:Boolean,
+        default:false
     }
    
 },{timestamps:true});
