@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import profile from '../assets/profile.png'
-import { updateUserFailure,updateUserStart,updateUserSuccess,deleteUserFailure,deleteUserSuccess,deleteUserStart } from '../Redux/Reducer/UserSlice'
+import { updateUserFailure,updateUserStart,updateUserSuccess,deleteUserFailure,deleteUserSuccess,deleteUserStart,signOutUserFailure,signOutUserStart,signOutUserSuccess } from '../Redux/Reducer/UserSlice'
 
 const Profile = () => {
   const {currentUser,loading,error}=useSelector((state)=>state.user)
@@ -56,6 +56,7 @@ const Profile = () => {
   }
 
   const handleDeleteUser=async()=>{
+
     try{
       dispatch(deleteUserStart())
       const res=await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`,{
@@ -70,6 +71,21 @@ const Profile = () => {
       dispatch(deleteUserSuccess(data))
     }catch(error){
       dispatch(deleteUserFailure(error.message))
+    }
+  }
+
+  const handleSignOutUser=async(req,res)=>{
+    try{
+      dispatch(signOutUserStart())
+      const res=await fetch('http://localhost:3000/api/auth/signout')
+      const data=await res.json()
+      if(data.success===false){
+        dispatch(signOutUserFailure(data.message))
+        return
+      }
+      dispatch(signOutUserSuccess(data))
+    }catch(error){
+      dispatch(signOutUserFailure(error.message))
     }
   }
   useEffect(()=>{
@@ -96,7 +112,7 @@ const Profile = () => {
       </form>
       <div className='flex justify-between mt-2'>
         <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer hover:text-red-400'>Delete Account</span>
-        <span className='text-red-700 cursor-pointer  hover:text-red-400'>Sign Out</span>
+        <span onClick={handleSignOutUser} className='text-red-700 cursor-pointer  hover:text-red-400'>Sign Out</span>
       </div>
     </div>
   )
