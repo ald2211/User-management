@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteUser, getUser,updateUser } from '../Controllers/user.controller.js';
+import { deleteUser, getUsers,updateUser } from '../Controllers/user.controller.js';
 import { verifyToken } from '../utils/verifyUser.js';
 import path from'path';
 import multer from 'multer';
@@ -14,9 +14,10 @@ const storage = multer.diskStorage({
     }
   });
   const upload = multer({ storage: storage });
-router.get('/test',getUser)
+
 router.post('/update/:id', upload.single('avatar'),verifyToken,updateUser)
 router.delete('/delete/:id',verifyToken,deleteUser)
+router.get('/getusers',verifyToken,getUsers)
 
 
 export default router
