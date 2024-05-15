@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import {useNavigate} from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux";
-import { signInFailure,signInStart,signInSuccess } from "../Redux/Reducer/UserSlice";
+import { signInFailure,signInStart,signInSuccess,clear} from "../Redux/Reducer/UserSlice";
 
 const Login = () => {
   const [signInState, setSignInState] = useState("Sign In");
@@ -10,9 +10,13 @@ const Login = () => {
   const passwordRef=useRef()
   const{loading,error}=useSelector((state)=>state.user)
   const dispatch=useDispatch();
-
-  
   const navigate=useNavigate()
+
+  if(error!==null){
+    setTimeout(()=>{
+      dispatch(clear())
+    },3000)
+  }
   const handleChange=(event)=>{
     setFormData(
       {
