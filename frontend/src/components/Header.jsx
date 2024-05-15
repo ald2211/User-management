@@ -22,7 +22,7 @@ const Header = () => {
       <>
       <Link to='/'> <li className='sm:inline text-slate-800 hover:text-red-600'>Home</li> </Link>
       <Link to='/profile'>
-        <img className='rounded-full h-7 w-7 object-cover' src={currentUser.avatar||profile} alt="profile" />
+        <img className='rounded-full h-8 w-8 object-cover' src={currentUser.avatar ? `http://localhost:3000/uploads/${currentUser.avatar}` : profile} alt="profile" />
       </Link>
       </>:
       <Link to='/auth'> <li className='sm:inline text-slate-800 hover:text-red-600'>Sign In</li> </Link>

@@ -5,6 +5,7 @@ import userRouter from './Routes/user.route.js';
 import authRouter from './Routes/auth.route.js';
 import cors from 'cors'
 import cookieParser from"cookie-parser"
+
 //configue env file
 dotenv.config()
 
@@ -23,8 +24,10 @@ const corsOptions = {
     credentials: true // Allow credentials (cookies)
   };
   app.use(cors(corsOptions));
+  app.use('/uploads', express.static('uploads'));
 app.use(express.json())
 app.use(cookieParser());
+
 //listen port
 app.listen(port,()=>{
     console.log('server running')
