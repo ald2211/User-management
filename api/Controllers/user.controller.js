@@ -8,8 +8,7 @@ export const getUser=(req,res)=>{
 
 
 export const updateUser=async(req,res,next)=>{
-    console.log('params:',req.params.id)
-    console.log('reached:',req.body);
+   
     if(req.user.id!==req.params.id)return(errorHandler(401,'not authenticated'))
     try{
         const updateFields = {};
@@ -36,4 +35,20 @@ export const updateUser=async(req,res,next)=>{
     }catch(error){
         next(error)
     }
+}
+
+ export const deleteUser=async(req,res,next)=>{
+
+    if(req.user.id!==req.params.id)return(errorHandler(401,'not authenticated')) 
+    
+        try{
+            await User.findByIdAndDelete(req.params.id)
+            res.clearCookie('access_token');
+            res.status(200).json({message:'user deleted successfully'})
+        }catch(error){
+
+            next(error)
+        }
+
+
 }

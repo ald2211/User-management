@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import profile from '../assets/profile.png'
-import { updateUserFailure,updateUserStart,updateUserSuccess } from '../Redux/Reducer/UserSlice'
+import { updateUserFailure,updateUserStart,updateUserSuccess,deleteUserFailure,deleteUserSuccess,deleteUserStart } from '../Redux/Reducer/UserSlice'
 
 const Profile = () => {
   const {currentUser,loading,error}=useSelector((state)=>state.user)
@@ -54,6 +54,24 @@ const Profile = () => {
       dispatch(updateUserFailure(error.message))
     }
   }
+
+  const handleDeleteUser=async()=>{
+    try{
+      dispatch(deleteUserStart())
+      const res=await fetch(`http://localhost:3000/api/user/delete/${currentUser._id}`,{
+        method:'DELETE',
+        credentials: 'include'
+      })
+      const data=res.json()
+      if(data.success===false){
+        dispatch(deleteUserFailure(data.message))
+        return
+      }
+      dispatch(deleteUserSuccess(data))
+    }catch(error){
+      dispatch(deleteUserFailure(error.message))
+    }
+  }
   useEffect(()=>{
     if(file){
       
@@ -77,7 +95,7 @@ const Profile = () => {
         <button type='submit'  className='bg-slate-800 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>update</button>
       </form>
       <div className='flex justify-between mt-2'>
-        <span className='text-red-700 cursor-pointer hover:text-red-400'>Delete Account</span>
+        <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer hover:text-red-400'>Delete Account</span>
         <span className='text-red-700 cursor-pointer  hover:text-red-400'>Sign Out</span>
       </div>
     </div>
