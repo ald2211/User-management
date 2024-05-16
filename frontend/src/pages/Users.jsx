@@ -32,7 +32,7 @@ import Search from '../components/Search';
     if (currentUser.isAdmin) {
       fetchUsers();
     }
-  }, [currentUser._id,userState]);
+  }, [currentUser._id]);
 
   const handleShowMore = async () => {
     const startIndex = users.length;
@@ -58,6 +58,11 @@ import Search from '../components/Search';
         const data = await res.json();
         if (data.success) {
             setShowModal(false);
+            console.log('data:',data)
+            const changedState=users.filter((item)=>
+              item._id===userIdToDelete
+            )
+            changedState
             setUserState(null)
             
         } else {

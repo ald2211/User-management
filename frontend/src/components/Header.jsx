@@ -30,7 +30,7 @@ const Header = () => {
       </Link>
       <span className=' bg-slate-800 text-sm text-white  me-0 px-3 py-1 rounded-lg border border-white-400'>{currentUser.isAdmin?'Admin':'User'}</span>
       </>:
-      <Link to='/auth'> <li className='sm:inline text-slate-800 hover:text-red-600'>Sign Up</li> </Link>
+      <Link to='/auth'> <li className='sm:inline text-slate-800 hover:text-red-600'>Sign In</li> </Link>
      }
      
       </ul>

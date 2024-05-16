@@ -98,19 +98,19 @@ const Profile = () => {
   },[file])
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-4xl font-semibold text-center my-7'>profile</h1>
+      <h1 className='text-4xl font-semibold text-center my-2'>profile</h1>
       <p className='text-red-700 text-center'>{error?error:''}</p>
       <p className='text-green-700 text-center'>{updateSuccess?'user updated successfully':''}</p>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4' >
+      <form onSubmit={handleSubmit} className='flex flex-col gap-3' >
         <input onChange={(e)=>setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/*' />
-        <img onClick={()=>fileRef.current.click()} className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2' src={currentUser.avatar ? `http://localhost:3000/uploads/${currentUser.avatar}` : profile} ref={imgRef} alt="" />
-        <input onChange={handleChange} type="text" placeholder='username' className='border p-3 rounded-lg' id='username' defaultValue={currentUser.username} />
-        <input onChange={handleChange} type="text" placeholder='number' className='border p-3 rounded-lg' id='number' defaultValue={currentUser.number} />
-        <input onChange={handleChange} type="email" placeholder='email' className='border p-3 rounded-lg' id='email' defaultValue={currentUser.email}/>
-        <input onChange={handleChange} type="text" placeholder='password' className='border p-3 rounded-lg' id='password' />
-        <button type='submit'  className='bg-slate-800 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'>update</button>
+        <img onClick={()=>fileRef.current.click()} className='rounded-full h-24 w-24 object-cover cursor-pointer self-center ' src={currentUser.avatar ? `http://localhost:3000/uploads/${currentUser.avatar}` : profile} ref={imgRef} alt="" />
+        <input onChange={handleChange} type="text" placeholder='username' className='border p-2 rounded-lg' id='username' defaultValue={currentUser.username} />
+        <input onChange={handleChange} type="text" placeholder='number' className='border p-2 rounded-lg' id='number' defaultValue={currentUser.number} />
+        <input onChange={handleChange} type="email" placeholder='email' className='border p-2 rounded-lg' id='email' defaultValue={currentUser.email}/>
+        <input onChange={handleChange} type="text" placeholder='password' className='border p-2 rounded-lg' id='password' />
+        <button type='submit'  className='bg-slate-800 text-white rounded-lg p-2 uppercase hover:opacity-95 disabled:opacity-80'>update</button>
       </form>
-      <div className='flex justify-between mt-2'>
+      <div className='flex justify-between mt-1'>
         <span onClick={handleDeleteUser} className='text-red-700 cursor-pointer hover:text-red-400'>Delete Account</span>
         <span onClick={handleSignOutUser} className='text-red-700 cursor-pointer  hover:text-red-400'>Sign Out</span>
       </div>
